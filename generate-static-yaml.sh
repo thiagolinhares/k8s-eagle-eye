@@ -106,7 +106,7 @@ render_defectdojo () {
 
 # Call functions providing chart version
 
-if [[ $1 == "trivy-operatro" ]]; then
+if [[ $1 == "trivy-operator" ]]; then
   start
   render_trivy 0.15.1
   echo -e "\nTrivy-Operator files: \t${helm_static}\n"
