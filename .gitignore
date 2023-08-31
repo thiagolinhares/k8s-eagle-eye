@@ -1,0 +1,3 @@
+# Ignore rendered yamls (they should be generated from values.yaml)
+rendered
+yq

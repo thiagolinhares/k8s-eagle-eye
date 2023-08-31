@@ -1,0 +1,84 @@
+image:
+  repository: aquasec/postee
+  tag: "2.14.0-amd64"
+
+persistentVolume:
+  enabled: false
+  storageClass: "-"
+
+posteUi:
+  image: aquasec/postee-ui
+  tag: "2.14.0-amd64"
+
+uiService:
+  type: ClusterIP
+
+posteeConfig: |
+  name: postee
+  max-db-size: 1000MB  
+  db-verify-interval: 6
+
+  # Routes are used to define how to handle an incoming message
+  routes:
+  - name: Trivy Operator - Vulnerabilities
+    input: contains(input.operatorObject.kind, "VulnerabilityReport")
+    serialize-actions: true
+    actions: [send-to-dd]
+    template: dd-rego
+
+  ### Commented out - will be used later on
+  #- name: Trivy Operator - Everything Else
+  #  input: not contains(input.operatorObject.kind, "VulnerabilityReport")
+  #  serialize-actions: true
+  #  actions: [send-to-logstash]
+  #  template: raw-json
+
+  # Templates are used to format a message
+  templates:
+  - name: raw-json
+    rego-package: postee.rawmessage.json
+
+  - name: dd-rego
+    rego-package: postee.trivyoperator.custom.defectdojo
+
+  actions:
+  - name: send-to-logstash
+    type: webhook
+    enable: false
+    url: "http://logstash-api.example.com:8080"
+  
+  - name: send-to-dd
+    type: exec
+    enable: true
+    env:
+      - "DEFECTDOJO_URL=http:/defectdojo-django.svc"
+      - "DEFECTDOJO_API_TOKEN=38c2c239c0999222ee4efe556c325a769fa929f0"
+    input-file: /server/scripts/dd-upload.sh
+  
+extraVolumes:
+  - name: postee-db
+    emptyDir: {}
+  - name: postee-config
+    emptyDir: {}
+  - name: postee-rego-template
+    emptyDir: {}
+  - name: postee-filters
+    emptyDir: {} 
+  - name: custom-templates
+    configMap:
+      name: postee-custom-templates 
+      items:
+        - key: rego-trivy.rego
+          path: rego-trivy.rego
+  - name: custom-scripts
+    configMap:
+      name: postee-custom-scripts
+      items:
+        - key: dd-upload.sh
+          path: dd-upload.sh
+
+extraVolumeMounts:
+  - name: custom-templates
+    mountPath: /server/rego-templates/my-custom
+  - name: custom-scripts
+    mountPath: /server/scripts

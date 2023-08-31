@@ -1,0 +1,56 @@
+createSecret: true
+createRabbitMqSecret: false
+createRedisSecret: true
+createMysqlSecret: true
+createPostgresqlSecret: false
+trackConfig: enabled
+
+host: 127.0.0.1
+database: mysql
+
+django:
+  ingress:
+    enabled: false
+  uswgi:
+    enable_debug: true
+
+celery:
+  broker: redis
+
+mysql:
+  enabled: true
+  primary:
+    persistence:
+      storageClass: local-path
+      accessModes:
+        - ReadWriteOnce
+      size: 1Gi
+
+postgresql:
+  enabled: false
+
+redis:
+  enabled: true
+  master:
+    persistence:
+      enabled: false
+
+
+rabbitmq:
+  enabled: false
+  ulimitNofiles: ""
+  persistence:
+    enabled: false
+#
+extraConfigs:
+  DD_DEBUG: "true"
+  DD_CSRF_TRUSTED_ORIGINS: "http://127.0.0.1"
+  DD_ALLOWED_HOSTS: "127.0.0.1"
+
+monitoring:
+  enabled: true
+  # Add the nginx prometheus exporter sidecar
+  prometheus:
+    enabled: true
+    image: nginx/nginx-prometheus-exporter:0.11.0
+    imagePullPolicy: IfNotPresent
