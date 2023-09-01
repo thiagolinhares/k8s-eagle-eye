@@ -38,7 +38,9 @@ render_trivy () {
   rm -rf ${helm_static}/templates/specs
   
   # change all ClusterRole to Role (namespace limited scope)
-  sed -i 's/ClusterRole/Role/g' ${helm_static}/templates/rbac.yaml
+  $YQ_BINARY eval '(. | select(.kind == "ClusterRole" and .metadata.name == "trivy-operator") | .kind = "Role" | .metadata.name = "trivy-operator-mod-cluster") // .' -i ${helm_static}/templates/rbac.yaml
+
+  $YQ_BINARY eval '(. | select(.kind == "ClusterRoleBinding" and .metadata.name == "trivy-operator") | .kind = "RoleBinding" | .metadata.name = "trivy-operator-mod-cluster" | .roleRef.kind = "Role" | .roleRef.name = "trivy-operator-mod-cluster") // .' -i ${helm_static}/templates/rbac.yaml
 
   # hack persistent volumeclaimtemplate for trivy-server. 
   # PR to fix it accepted at: https://github.com/aquasecurity/trivy-operator/pull/1457
