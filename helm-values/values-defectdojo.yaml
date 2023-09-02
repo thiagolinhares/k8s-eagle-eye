@@ -1,7 +1,7 @@
 createSecret: true
 createRabbitMqSecret: false
 createRedisSecret: true
-createMysqlSecret: true
+createMysqlSecret: false
 createPostgresqlSecret: false
 trackConfig: enabled
 

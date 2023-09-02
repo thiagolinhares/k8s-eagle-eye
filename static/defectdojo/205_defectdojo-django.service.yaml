@@ -1,0 +1,22 @@
+---
+# Source: defectdojo/templates/django-service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: defectdojo-django
+  labels:
+    defectdojo.org/component: django
+    app.kubernetes.io/name: defectdojo
+    app.kubernetes.io/instance: defectdojo
+    app.kubernetes.io/managed-by: Helm
+    helm.sh/chart: defectdojo-1.6.82
+spec:
+  selector:
+    defectdojo.org/component: django
+    app.kubernetes.io/name: defectdojo
+    app.kubernetes.io/instance: defectdojo
+  ports:
+  - name: http
+    protocol: TCP
+    port: 80
+    targetPort: 8080

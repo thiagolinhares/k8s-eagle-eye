@@ -52,7 +52,7 @@ posteeConfig: |
     enable: true
     env:
       - "DEFECTDOJO_URL=http:/defectdojo-django.svc"
-      - "DEFECTDOJO_API_TOKEN=38c2c239c0999222ee4efe556c325a769fa929f0"
+      - "DEFECTDOJO_API_TOKEN=123456_dummy_7890"
     input-file: /server/scripts/dd-upload.sh
   
 extraVolumes:

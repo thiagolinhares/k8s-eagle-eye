@@ -1,0 +1,107 @@
+---
+# Source: postee/templates/postee.yaml
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: postee
+  labels:
+    helm.sh/chart: postee-v2.14.0
+    app.kubernetes.io/name: postee
+    app.kubernetes.io/instance: postee
+    app.kubernetes.io/version: "v2.14.0"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: postee
+      app.kubernetes.io/instance: postee
+  serviceName: postee
+  template:
+    metadata:
+      annotations:
+        checksum/secret: 085e5860cdfd2f910c69eacd98b1e475aa4da521dec511afdd8ec53818c80283
+      labels:
+        app.kubernetes.io/name: postee
+        app.kubernetes.io/instance: postee
+    spec:
+      serviceAccountName: postee
+      securityContext: {}
+      initContainers:
+        - name: setting-db
+          image: "busybox:1.34"
+          imagePullPolicy: IfNotPresent
+          command: ["/bin/chown", "-R", "1099", "/server/database"]
+          volumeMounts:
+            - name: postee-db
+              mountPath: /server/database
+        - name: setting-cfg
+          image: "busybox:1.34"
+          imagePullPolicy: IfNotPresent
+          command: ["/bin/cp", "/k8s/cfg.yaml", "/data/cfg.yaml"]
+          volumeMounts:
+            - name: postee-secret-vol
+              mountPath: /k8s
+            - name: postee-config
+              mountPath: /data
+      containers:
+        - name: postee
+          securityContext: {}
+          image: "aquasec/postee:2.14.0-amd64"
+          imagePullPolicy: Always
+          env:
+            - name: POSTEE_CFG
+              value: /data/cfg.yaml
+            - name: POSTEE_DEBUG
+              value: "not"
+          ports:
+            - name: http
+              containerPort: 8082
+              protocol: TCP
+            - name: tls
+              containerPort: 8445
+              protocol: TCP
+          volumeMounts:
+            - name: postee-db
+              mountPath: /server/database
+            - name: postee-config
+              mountPath: /data
+            - name: postee-rego-template
+              mountPath: /server/rego-templates/custom
+            - name: postee-filters
+              mountPath: /server/rego-filters/custom
+            - mountPath: /server/rego-templates/my-custom
+              name: custom-templates
+            - mountPath: /server/scripts
+              name: custom-scripts
+          resources:
+            limits:
+              cpu: 500m
+              memory: 256Mi
+            requests:
+              cpu: 200m
+              memory: 128Mi
+      volumes:
+        - secret:
+            secretName: postee-secret
+          name: postee-secret-vol
+        - emptyDir: {}
+          name: postee-db
+        - emptyDir: {}
+          name: postee-config
+        - emptyDir: {}
+          name: postee-rego-template
+        - emptyDir: {}
+          name: postee-filters
+        - configMap:
+            items:
+              - key: rego-trivy.rego
+                path: rego-trivy.rego
+            name: postee-custom-templates
+          name: custom-templates
+        - configMap:
+            items:
+              - key: dd-upload.sh
+                path: dd-upload.sh
+            name: postee-custom-scripts
+          name: custom-scripts
