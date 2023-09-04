@@ -92,7 +92,7 @@ spec:
             - name: OPERATOR_METRICS_INFRA_ASSESSMENT_INFO_ENABLED
               value: "false"   
             - name: OPERATOR_WEBHOOK_BROADCAST_URL
-              value: "http://postee.svc:8082"
+              value: "http://postee:8082"
             - name: OPERATOR_WEBHOOK_BROADCAST_TIMEOUT
               value: "60s"
             - name: OPERATOR_SEND_DELETED_REPORTS

@@ -12,7 +12,7 @@ metadata:
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: Role
-  name: trivy-operator-merged
+  name: trivy-operator
 subjects:
   - kind: ServiceAccount
     name: trivy-operator

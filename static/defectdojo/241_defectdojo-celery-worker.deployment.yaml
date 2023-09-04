@@ -1,9 +1,9 @@
 ---
-# Source: defectdojo/templates/celery-beat-deployment.yaml
+# Source: defectdojo/templates/celery-worker-deployment.yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: defectdojo-celery-beat
+  name: defectdojo-celery-worker
   labels:
     defectdojo.org/component: celery
     app.kubernetes.io/name: defectdojo
@@ -25,24 +25,19 @@ spec:
         app.kubernetes.io/instance: defectdojo
       annotations:
         checksum/config: 15d0a45898c24a25499b006795e97f77e3f07c8abbefdb08a917ff7d2ff26575
-        checksum/secret: bae6e597ae56a3cd44841e4d7a42cb95a05a1431040378270e19cd348dc3d445
+        checksum/secret: 0d7833c1fb618686c3c3d6e9c562889e098a0e450fdc41d3d183952f7c2f071b
         checksum/esecret: 01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b
     spec:
       serviceAccountName: defectdojo
       volumes:
-      - name: run
-        emptyDir: {}
       containers:
-      - command:
-        - /entrypoint-celery-beat.sh
-        name: celery
-        image: "defectdojo/defectdojo-django:latest"
+      - name: celery
+        image: "defectdojo/defectdojo-django:2.25.4"
         imagePullPolicy: Always
         securityContext:
           runAsUser: 1001
+        command: ['/entrypoint-celery-worker.sh']
         volumeMounts:
-        - name: run
-          mountPath: /run/defectdojo
         envFrom:
         - configMapRef:
             name: defectdojo
@@ -68,7 +63,7 @@ spec:
         resources:
           limits:
             cpu: 2000m
-            memory: 256Mi
+            memory: 512Mi
           requests:
             cpu: 100m
             memory: 128Mi

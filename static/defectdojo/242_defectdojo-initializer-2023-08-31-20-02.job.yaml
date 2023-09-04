@@ -26,7 +26,7 @@ spec:
       volumes:
       containers:
       - name: initializer
-        image: "defectdojo/defectdojo-django:latest"
+        image: "defectdojo/defectdojo-django:2.25.4"
         imagePullPolicy: Always
         securityContext:
           runAsUser: 1001

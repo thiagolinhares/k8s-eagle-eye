@@ -50,9 +50,9 @@ spec:
       rootPath: /default/vitess/defectdojo-db/global
   imagePullPolicies: {}
   images:
+    mysqldExporter: registry.dfw.vipv2.net/vitess/mysql-exporter:v0.12.1    
     mysqld:
       mysql80Compatible: registry.dfw.vipv2.net/wpvip/vitess-v12-a8c-patched-mysql80:8.0.28-v0.12.3-41-g198e26d
-    mysqldExporter: registry.dfw.vipv2.net/vitess/mysql-exporter:v0.12.1
     vtbackup: registry.dfw.vipv2.net/wpvip/vitess-v12-a8c-patched-mysql80:8.0.28-v0.12.3-41-g198e26d
     vtctld: registry.dfw.vipv2.net/wpvip/vitess-v12-a8c-patched-mysql80:8.0.28-v0.12.3-41-g198e26d
     vtgate: registry.dfw.vipv2.net/wpvip/vitess-v12-a8c-patched-mysql80:8.0.28-v0.12.3-41-g198e26d
@@ -121,8 +121,8 @@ spec:
             vttablet:
               extraFlags:
                 app_idle_timeout: 30s
-                app_pool_dynamic: "true"
                 app_pool_size: "80"
+                app_pool_dynamic: "true"
                 backup_storage_block_size: "524288"
                 backup_storage_compress: "true"
                 backup_storage_number_blocks: "4"
@@ -146,7 +146,7 @@ spec:
                 queryserver-config-max-result-size: "1000000"
                 queryserver-config-pool-dynamic: "true"
                 queryserver-config-stream-pool-dynamic: "true"
-                queryserver-config-transaction-dynamic: "true"
+                queryserver-config-transaction-dynamic: "true"                
                 queryserver-config-warn-result-size: "50000"
                 relay_log_max_items: "250000"
                 relay_log_max_size: "134217728"

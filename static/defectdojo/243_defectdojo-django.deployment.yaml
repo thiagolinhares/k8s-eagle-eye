@@ -53,7 +53,7 @@ spec:
           initialDelaySeconds: 15
           timeoutSeconds: 5
       - name: uwsgi
-        image: 'defectdojo/defectdojo-django:latest'
+        image: 'defectdojo/defectdojo-django:2.25.4'
         imagePullPolicy: Always
         securityContext:
           runAsUser: 1001
@@ -117,7 +117,7 @@ spec:
             cpu: 100m
             memory: 256Mi
       - name: nginx
-        image: 'defectdojo/defectdojo-nginx:latest'
+        image: 'defectdojo/defectdojo-nginx:2.25.4'
         imagePullPolicy: Always
         securityContext:
           runAsUser: 1001

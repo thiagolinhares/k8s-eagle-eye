@@ -22,7 +22,7 @@ operator:
   metricsVulnIdEnabled: false
   accessGlobalSecretsAndServiceAccount: false
   #privateRegistryScanSecretsNames: {"app": "dockerconfigjson-harbor"}
-  webhookBroadcastURL: http://postee.svc:8082
+  webhookBroadcastURL: http://postee:8082
   webhookBroadcastTimeout: 60s
   webhookSendDeletedReports: true
 

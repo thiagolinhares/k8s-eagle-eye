@@ -20,7 +20,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/secret: 085e5860cdfd2f910c69eacd98b1e475aa4da521dec511afdd8ec53818c80283
+        checksum/secret: 0632e397a1c6b41cf139f12cd19177a84cf0a655804d23a19ebeeaa9a9e9b760
       labels:
         app.kubernetes.io/name: postee
         app.kubernetes.io/instance: postee
