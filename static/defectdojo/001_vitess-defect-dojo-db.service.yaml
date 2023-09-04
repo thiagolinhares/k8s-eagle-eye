@@ -1,0 +1,21 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: vitess-defectdojo-db
+  namespace: security-tools
+  labels:
+    app: defectdojo
+    component: db
+spec:
+  type: ClusterIP
+  clusterIP: None
+  sessionAffinity: None
+  ports:
+  - port: 3306
+    name: mysql
+    protocol: TCP
+    targetPort: mysql
+  selector:
+    planetscale.com/cluster: vitess-defectdojo-db
+    planetscale.com/component: vtgate

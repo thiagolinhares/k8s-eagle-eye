@@ -29,7 +29,7 @@ data:
   DD_CELERY_WORKER_CONCURRENCY: ''
   DD_CELERY_WORKER_PREFETCH_MULTIPLIER: ''
   DD_DATABASE_ENGINE: django.db.backends.mysql
-  DD_DATABASE_HOST: defectdojo-mysql
+  DD_DATABASE_HOST: vitess-defectdojo-db
   DD_DATABASE_PORT: '3306'
   DD_DATABASE_USER: defectdojo
   DD_DATABASE_NAME: defectdojo

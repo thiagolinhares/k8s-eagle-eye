@@ -1,7 +1,7 @@
 createSecret: true
 createRabbitMqSecret: false
 createRedisSecret: true
-createMysqlSecret: false
+createMysqlSecret: true
 createPostgresqlSecret: false
 trackConfig: enabled
 
@@ -18,13 +18,12 @@ celery:
   broker: redis
 
 mysql:
-  enabled: true
-  primary:
-    persistence:
-      storageClass: local-path
-      accessModes:
-        - ReadWriteOnce
-      size: 1Gi
+  enabled: false
+  auth:
+    username: defectdojo
+    password: dummy_p4ss_1337
+    database: defectdojo
+  mysqlServer: vitess-defectdojo-db
 
 postgresql:
   enabled: false
