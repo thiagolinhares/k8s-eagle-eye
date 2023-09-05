@@ -7,9 +7,7 @@ metadata:
   namespace: "security-tools"
   labels:
     app.kubernetes.io/name: redis
-    helm.sh/chart: redis-16.12.3
     app.kubernetes.io/instance: defectdojo
-    app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: master
 spec:
   replicas: 1
@@ -26,9 +24,7 @@ spec:
     metadata:
       labels:
         app.kubernetes.io/name: redis
-        helm.sh/chart: redis-16.12.3
         app.kubernetes.io/instance: defectdojo
-        app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/component: master
       annotations:
         checksum/configmap: c540b65260eae78a621251e9c3a2e39c6afa0dbe15495bfe16197e3452f69e4f

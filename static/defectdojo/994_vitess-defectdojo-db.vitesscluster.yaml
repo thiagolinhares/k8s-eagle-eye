@@ -3,7 +3,7 @@ apiVersion: planetscale.com/v2
 kind: VitessCluster
 metadata:
   name: vitess-defectdojo-db
-  namespace: security-tools
+  namespace: "security-tools"
   labels:
     component: db
     app: defectdojo

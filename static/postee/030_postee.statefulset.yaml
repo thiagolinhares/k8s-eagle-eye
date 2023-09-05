@@ -4,12 +4,11 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: postee
+  namespace: "security-tools"
   labels:
-    helm.sh/chart: postee-v2.14.0
     app.kubernetes.io/name: postee
     app.kubernetes.io/instance: postee
     app.kubernetes.io/version: "v2.14.0"
-    app.kubernetes.io/managed-by: Helm
 spec:
   replicas: 1
   selector:

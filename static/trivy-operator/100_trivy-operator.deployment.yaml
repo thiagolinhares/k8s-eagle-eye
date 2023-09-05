@@ -4,12 +4,11 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: trivy-operator
-  namespace: security-tools
+  namespace: "security-tools"
   labels:
     app.kubernetes.io/name: trivy-operator
     app.kubernetes.io/instance: trivy-operator
     app.kubernetes.io/version: "0.15.1"
-    app.kubernetes.io/managed-by: k8s-systems_powered-by-helm
 spec:
   replicas: 1
   strategy:

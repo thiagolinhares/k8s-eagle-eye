@@ -7,13 +7,10 @@ metadata:
   namespace: "security-tools"
   labels:
     app.kubernetes.io/name: mysql
-    helm.sh/chart: mysql-9.1.8
     app.kubernetes.io/instance: defectdojo
-    app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: primary
 spec:
   replicas: 1
-  podManagementPolicy: ""
   selector:
     matchLabels: 
       app.kubernetes.io/name: mysql
@@ -28,16 +25,12 @@ spec:
         checksum/configuration: 27cf01f8fe0165dfdbf8ab91df7b1de21738117853ffcd5febd8a79fe12cade0
       labels:
         app.kubernetes.io/name: mysql
-        helm.sh/chart: mysql-9.1.8
         app.kubernetes.io/instance: defectdojo
-        app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/component: primary
     spec:
       serviceAccountName: defectdojo-mysql
       
       affinity:
-        podAffinity:
-          
         podAntiAffinity:
           preferredDuringSchedulingIgnoredDuringExecution:
             - podAffinityTerm:
@@ -49,11 +42,8 @@ spec:
                   - "security-tools"
                 topologyKey: kubernetes.io/hostname
               weight: 1
-        nodeAffinity:
-          
       securityContext:
         fsGroup: 1001
-      initContainers:
       containers:
         - name: mysql
           image: docker.io/bitnami/mysql:8.0.29-debian-11-r3
@@ -78,7 +68,6 @@ spec:
                   key: mysql-password
             - name: MYSQL_DATABASE
               value: "defectdojo"
-          envFrom:
           ports:
             - name: mysql
               containerPort: 3306
@@ -150,10 +139,10 @@ spec:
           app.kubernetes.io/name: mysql
           app.kubernetes.io/instance: defectdojo
           app.kubernetes.io/component: primary
-        annotations:
       spec:
         accessModes:
           - "ReadWriteOnce"
         resources:
           requests:
             storage: "8Gi"
+        storageClassName: localpv-vip-database            

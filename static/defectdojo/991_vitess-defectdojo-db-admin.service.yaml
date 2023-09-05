@@ -3,7 +3,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: vitess-defectdojo-db-admin
-  namespace: security-tools
+  namespace: "security-tools"
   labels:
     app: defectdojo
     component: db

@@ -4,12 +4,11 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: defectdojo-django
+  namespace: "security-tools"
   labels:
     defectdojo.org/component: django
     app.kubernetes.io/name: defectdojo
     app.kubernetes.io/instance: defectdojo
-    app.kubernetes.io/managed-by: Helm
-    helm.sh/chart: defectdojo-1.6.82
 spec:
   replicas: 1
   selector:
@@ -28,9 +27,6 @@ spec:
         prometheus.io/port: "9113"
         prometheus.io/scheme: http
         prometheus.io/scrape: "true"
-        checksum/config: 15d0a45898c24a25499b006795e97f77e3f07c8abbefdb08a917ff7d2ff26575
-        checksum/secret: 312cb526e21ed11843bbb2d834ed5bb9101a1fab5813ec1a4cc3b822850f1624
-        checksum/esecret: 01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b
     spec:
       serviceAccountName: defectdojo
       securityContext:

@@ -4,12 +4,11 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: defectdojo-celery-worker
+  namespace: "security-tools"
   labels:
     defectdojo.org/component: celery
     app.kubernetes.io/name: defectdojo
     app.kubernetes.io/instance: defectdojo
-    app.kubernetes.io/managed-by: Helm
-    helm.sh/chart: defectdojo-1.6.82
 spec:
   replicas: 1
   selector:
@@ -23,13 +22,8 @@ spec:
         defectdojo.org/component: celery
         app.kubernetes.io/name: defectdojo
         app.kubernetes.io/instance: defectdojo
-      annotations:
-        checksum/config: 15d0a45898c24a25499b006795e97f77e3f07c8abbefdb08a917ff7d2ff26575
-        checksum/secret: 0d7833c1fb618686c3c3d6e9c562889e098a0e450fdc41d3d183952f7c2f071b
-        checksum/esecret: 01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b
     spec:
       serviceAccountName: defectdojo
-      volumes:
       containers:
       - name: celery
         image: "defectdojo/defectdojo-django:2.25.4"
@@ -37,7 +31,6 @@ spec:
         securityContext:
           runAsUser: 1001
         command: ['/entrypoint-celery-worker.sh']
-        volumeMounts:
         envFrom:
         - configMapRef:
             name: defectdojo

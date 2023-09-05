@@ -4,11 +4,10 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: defectdojo
+  namespace: "security-tools"
   labels:
     app.kubernetes.io/name: defectdojo
     app.kubernetes.io/instance: defectdojo
-    app.kubernetes.io/managed-by: Helm
-    helm.sh/chart: defectdojo-1.6.82
 data:
   DD_ADMIN_USER: admin
   DD_ADMIN_MAIL: admin@defectdojo.local

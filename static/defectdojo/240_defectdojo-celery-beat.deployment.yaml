@@ -4,12 +4,11 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: defectdojo-celery-beat
+  namespace: "security-tools"
   labels:
     defectdojo.org/component: celery
     app.kubernetes.io/name: defectdojo
     app.kubernetes.io/instance: defectdojo
-    app.kubernetes.io/managed-by: Helm
-    helm.sh/chart: defectdojo-1.6.82
 spec:
   replicas: 1
   selector:
@@ -23,10 +22,6 @@ spec:
         defectdojo.org/component: celery
         app.kubernetes.io/name: defectdojo
         app.kubernetes.io/instance: defectdojo
-      annotations:
-        checksum/config: 15d0a45898c24a25499b006795e97f77e3f07c8abbefdb08a917ff7d2ff26575
-        checksum/secret: bae6e597ae56a3cd44841e4d7a42cb95a05a1431040378270e19cd348dc3d445
-        checksum/esecret: 01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b
     spec:
       serviceAccountName: defectdojo
       volumes:

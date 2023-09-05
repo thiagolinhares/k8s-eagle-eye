@@ -3,15 +3,12 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: defectdojo-initializer-2023-08-31-20-02
+  name: defectdojo-initializer
+  namespace: "security-tools"
   labels:
     defectdojo.org/component: initializer
     app.kubernetes.io/name: defectdojo
     app.kubernetes.io/instance: defectdojo
-    app.kubernetes.io/managed-by: Helm
-    helm.sh/chart: defectdojo-1.6.82
-  annotations:
-    helm.sh/hook: post-install,post-upgrade
 spec:
   ttlSecondsAfterFinished: 60
   template:
@@ -20,17 +17,14 @@ spec:
         defectdojo.org/component: initializer
         app.kubernetes.io/name: defectdojo
         app.kubernetes.io/instance: defectdojo
-      annotations:
     spec:
       serviceAccountName: defectdojo
-      volumes:
       containers:
       - name: initializer
         image: "defectdojo/defectdojo-django:2.25.4"
         imagePullPolicy: Always
         securityContext:
           runAsUser: 1001
-        volumeMounts:
         command:
           - /entrypoint-initializer.sh
         envFrom:
