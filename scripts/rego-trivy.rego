@@ -53,7 +53,7 @@ dd_data:= {
       "environment": "Lab",
       "minimum_severity": "Low",
       "product_name": "k8s-poc",
-      "product_type": "kubernetes_cluster",
+      "product_type_name": "kubernetes_cluster",
       "auto_create_context": true,
       "scan_date": format_to_dd_date(input.operatorObject.metadata.creationTimestamp),
       "scan_type": "Trivy Operator Scan",
