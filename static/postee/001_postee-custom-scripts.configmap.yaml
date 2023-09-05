@@ -41,6 +41,6 @@ data:
     \ # shellcheck disable=SC3003\n  IFS=$'\\n'\n  for entry in $FORM_ENTRIES; do\n
     \   COMMAND=\"$COMMAND -F $entry\"\n  done\n  IFS=\"$OLD_IFS\"\n\n\n  DD_IMPORT_URL=\"${DEFECTDOJO_URL}/api/v2/reimport-scan/\"\n\n
     \ # add URL and final JSON payload (trivy report)\n  COMMAND=\"$COMMAND -F \\\"file=@${TMP_FILE}\\\"
-    -X POST ${DD_IMPORT_URL}\"\nfi\n\n\nif ! eval \"$COMMAND\"; then\n  echo \"ERROR:
-    failed to call ${DD_IMPORT_URL}\"\n  exit 1\nfi\n\necho \"SUCCESS: status ok from
-    ${DD_IMPORT_URL}\"\nexit 0"
+    -X POST ${DD_IMPORT_URL}\"\nfi\n\necho \"Command: $COMMAND\"\nif ! eval \"$COMMAND\";
+    then\n  echo \"ERROR: failed to call ${DD_IMPORT_URL}\"\n  exit 1\nfi\n\necho
+    \"SUCCESS: status ok from ${DD_IMPORT_URL}\"\nexit 0"

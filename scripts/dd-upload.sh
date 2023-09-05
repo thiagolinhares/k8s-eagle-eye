@@ -102,7 +102,7 @@ else
   COMMAND="$COMMAND -F \"file=@${TMP_FILE}\" -X POST ${DD_IMPORT_URL}"
 fi
 
-
+echo "Command: $COMMAND"
 if ! eval "$COMMAND"; then
   echo "ERROR: failed to call ${DD_IMPORT_URL}"
   exit 1

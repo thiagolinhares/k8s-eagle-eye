@@ -62,7 +62,7 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: postee-dd-env
-                  key: token              
+                  key: token
           ports:
             - name: http
               containerPort: 8082
