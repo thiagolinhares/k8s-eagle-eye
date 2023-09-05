@@ -19,7 +19,7 @@ data:
     input.operatorObject,\n    \"metadata\": {\n      \"active\": true,\n      \"verified\":
     false,\n      \"engagement_name\": sprintf(\"FedRamp Audit - %s\", [get_month_name_from_date(input.operatorObject.metadata.creationTimestamp)]),\n
     \     \"environment\": \"Lab\",\n      \"minimum_severity\": \"Low\",\n      \"product_name\":
-    \"k8s-poc\",\n      \"product_type\": \"kubernetes_cluster\",\n      \"auto_create_context\":
+    \"k8s-poc\",\n      \"product_type_name\": \"kubernetes_cluster\",\n      \"auto_create_context\":
     true,\n      \"scan_date\": format_to_dd_date(input.operatorObject.metadata.creationTimestamp),\n
     \     \"scan_type\": \"Trivy Operator Scan\",\n      \"test_title\": input.operatorObject.metadata.name,\n
     \     \"service\": image_name,\n      \"version\": image_version,\n      \"group_by\":

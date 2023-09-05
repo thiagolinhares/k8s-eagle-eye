@@ -19,15 +19,14 @@ data:
     then\n    echo \"ERROR => JSON, unexpected structure \\\"defectdojo\\\"\"\n    return
     1\n  fi\n}\nif ! _validate_json; then\n  exit 1\nfi\n\necho \"$POSTEE_EVENT\"
     | jq '.defectdojo.scan' | tee \"$TMP_FILE\"\n\n# Initialize the command string\nCOMMAND=\"curl
-    -X POST -H \\\"Authorization: Token $DEFECTDOJO_API_TOKEN\\\"\"\n\n# Check verb
-    (action) to be performed, based on .defectdojo.verb\nVERB=$(echo \"$POSTEE_EVENT\"
-    | jq '.defectdojo.verb')\n\n# If verb is delete, call DELETE on /api/v2/tests
-    with the test_title, else call POST on /api/v2/reimport-scan/\nif [ \"$VERB\"
-    = \"delete\" ]; then\n  # extract test_title from metadata key\n  TEST_TITLE=$(echo
-    \"$POSTEE_EVENT\" | jq '.defectdojo.metadata.test_title')\n  echo \"INFO: verb
-    is delete, will delete test with title ${TEST_TITLE}\"\n  if [ -z \"$TEST_TITLE\"
-    ]; then\n    echo \"ERROR: could not find test_title in metadata\"\n    exit 1\n
-    \ else\n    DD_DELETE_URL=\"${DEFECTDOJO_URL}/api/v2/tests/?title=${TEST_TITLE}\"\n
+    -H \\\"Authorization: Token $DEFECTDOJO_API_TOKEN\\\"\"\n\n# Check verb (action)
+    to be performed, based on .defectdojo.verb\nVERB=$(echo \"$POSTEE_EVENT\" | jq
+    '.defectdojo.verb')\n\n# If verb is delete, call DELETE on /api/v2/tests with
+    the test_title, else call POST on /api/v2/reimport-scan/\nif [ \"$VERB\" = \"delete\"
+    ]; then\n  # extract test_title from metadata key\n  TEST_TITLE=$(echo \"$POSTEE_EVENT\"
+    | jq '.defectdojo.metadata.test_title')\n  echo \"INFO: verb is delete, will delete
+    test with title ${TEST_TITLE}\"\n  if [ -z \"$TEST_TITLE\" ]; then\n    echo \"ERROR:
+    could not find test_title in metadata\"\n    exit 1\n  else\n    DD_DELETE_URL=\"${DEFECTDOJO_URL}/api/v2/tests/?title=${TEST_TITLE}\"\n
     \   COMMAND=\"$COMMAND -X DELETE ${DD_DELETE_URL}\"\n  fi\nelse\n  echo \"Import
     new scan\"\n  # extract all key/value pairs from metadata key\n  # convert the
     resulting dictionary into multiline\n  # string => $key=$value, can further be
@@ -38,9 +37,9 @@ data:
     \ # shellcheck disable=SC3003\n  IFS=$'\\n'\n  for entry in $FORM_ENTRIES; do\n
     \   COMMAND=\"$COMMAND -F $entry\"\n  done\n  IFS=\"$OLD_IFS\"\n\n\n  DD_IMPORT_URL=\"${DEFECTDOJO_URL}/api/v2/reimport-scan/\"\n\n
     \ # add URL and final JSON payload (trivy report)\n  COMMAND=\"$COMMAND -F \\\"file=@${TMP_FILE}\\\"
-    ${DD_IMPORT_URL}\"\nfi\n\n\nif ! eval \"$COMMAND\"; then\n  echo \"ERROR: failed
-    to call ${DD_IMPORT_URL}\"\n  exit 1\nfi\n\necho \"SUCCESS: status ok from ${DD_IMPORT_URL}\"\nexit
-    0"
+    -X POST ${DD_IMPORT_URL}\"\nfi\n\n\nif ! eval \"$COMMAND\"; then\n  echo \"ERROR:
+    failed to call ${DD_IMPORT_URL}\"\n  exit 1\nfi\n\necho \"SUCCESS: status ok from
+    ${DD_IMPORT_URL}\"\nexit 0"
 kind: ConfigMap
 metadata:
   creationTimestamp: null

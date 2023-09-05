@@ -54,6 +54,16 @@ spec:
               value: /data/cfg.yaml
             - name: POSTEE_DEBUG
               value: "not"
+            - name: DEFECTDOJO_URL
+              valueFrom:
+                secretKeyRef:
+                  name: postee-dd-env
+                  key: url
+            - name: DEFECTDOJO_API_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: postee-dd-env
+                  key: token              
           ports:
             - name: http
               containerPort: 8082

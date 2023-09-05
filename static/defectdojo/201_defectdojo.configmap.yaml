@@ -14,7 +14,7 @@ data:
   DD_ADMIN_MAIL: admin@defectdojo.local
   DD_ADMIN_FIRST_NAME: Admin
   DD_ADMIN_LAST_NAME: User
-  DD_ALLOWED_HOSTS: 127.0.0.1
+  DD_ALLOWED_HOSTS: "127.0.0.1,defectdojo-django"
   DD_SITE_URL: http://localhost:8080
   DD_CELERY_BROKER_SCHEME: redis
   DD_CELERY_BROKER_USER: ''
@@ -42,5 +42,5 @@ data:
   DD_DJANGO_METRICS_ENABLED: 'true'
   NGINX_METRICS_ENABLED: 'true'
   METRICS_HTTP_AUTH_USER: monitoring
-  DD_CSRF_TRUSTED_ORIGINS: http://127.0.0.1
+  DD_CSRF_TRUSTED_ORIGINS: "http://127.0.0.1,http://defectdojo-django"
   DD_DEBUG: "true"
