@@ -1,0 +1,26 @@
+---
+# Source: defectdojo/charts/mysql/templates/primary/svc-headless.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: defectdojo-mysql-headless
+  namespace: "security-tools"
+  labels:
+    app.kubernetes.io/name: mysql
+    helm.sh/chart: mysql-9.1.8
+    app.kubernetes.io/instance: defectdojo
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/component: primary
+  annotations:
+spec:
+  type: ClusterIP
+  clusterIP: None
+  publishNotReadyAddresses: true
+  ports:
+    - name: mysql
+      port: 3306
+      targetPort: mysql
+  selector: 
+    app.kubernetes.io/name: mysql
+    app.kubernetes.io/instance: defectdojo
+    app.kubernetes.io/component: primary

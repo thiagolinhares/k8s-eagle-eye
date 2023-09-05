@@ -47,12 +47,10 @@ posteeConfig: |
     enable: false
     url: "http://logstash-api.example.com:8080"
   
+  # Environment variables set through secret postee-dd-env
   - name: send-to-dd
     type: exec
     enable: true
-    env:
-      - "DEFECTDOJO_URL=http:/defectdojo-django.svc"
-      - "DEFECTDOJO_API_TOKEN=38c2c239c0999222ee4efe556c325a769fa929f0"
     input-file: /server/scripts/dd-upload.sh
   
 extraVolumes:

@@ -1,0 +1,191 @@
+---
+apiVersion: planetscale.com/v2
+kind: VitessCluster
+metadata:
+  name: vitess-defectdojo-db
+  namespace: security-tools
+  labels:
+    component: db
+    app: defectdojo
+spec:
+  cells:
+  - gateway:
+      affinity:
+        nodeAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - preference:
+              matchExpressions:
+              - key: k8s.a8c.io/node.class
+                operator: In
+                values:
+                - vip-general
+            weight: 20
+      authentication:
+        static:
+          secret:
+            key: users.json
+            name: vitess-defectdojo-db
+      replicas: 1
+      resources:
+        limits:
+          cpu: "1"
+          memory: 512Mi
+        requests:
+          cpu: "0.5"
+          memory: 256Mi
+      service:
+        clusterIP: None
+    lockserver:
+      external:
+        address: http://etcd-global-client.vitess-system.svc.cluster.local:2379
+        implementation: etcd2
+        rootPath: /default/vitess/defectdojo-db/cell/dfw_vip_exploud
+    name: dfw_vip_exploud
+  gatewayService:
+    clusterIP: None
+  globalLockserver:
+    external:
+      address: http://etcd-global-client.vitess-system.svc.cluster.local:2379
+      implementation: etcd2
+      rootPath: /default/vitess/defectdojo-db/global
+  imagePullPolicies: {}
+  images:
+    mysqldExporter: registry.dfw.vipv2.net/vitess/mysql-exporter:v0.12.1    
+    mysqld:
+      mysql80Compatible: registry.dfw.vipv2.net/wpvip/vitess-v12-a8c-patched-mysql80:8.0.28-v0.12.3-41-g198e26d
+    vtbackup: registry.dfw.vipv2.net/wpvip/vitess-v12-a8c-patched-mysql80:8.0.28-v0.12.3-41-g198e26d
+    vtctld: registry.dfw.vipv2.net/wpvip/vitess-v12-a8c-patched-mysql80:8.0.28-v0.12.3-41-g198e26d
+    vtgate: registry.dfw.vipv2.net/wpvip/vitess-v12-a8c-patched-mysql80:8.0.28-v0.12.3-41-g198e26d
+    vttablet: registry.dfw.vipv2.net/wpvip/vitess-v12-a8c-patched-mysql80:8.0.28-v0.12.3-41-g198e26d
+  keyspaces:
+  - name: defectdojo
+    partitionings:
+    - equal:
+        parts: 1
+        shardTemplate:
+          affinity:
+            nodeAffinity:
+              preferredDuringSchedulingIgnoredDuringExecution:
+              - preference:
+                  matchExpressions:
+                  - key: k8s.a8c.io/node.class
+                    operator: In
+                    values:
+                    - vip-database
+                weight: 20
+          databaseInitScriptSecret:
+            key: init_db.sql
+            name: vitess-defectdojo-db
+          replication: {}
+          tabletPools:
+          - affinity:
+              nodeAffinity:
+                preferredDuringSchedulingIgnoredDuringExecution:
+                - preference:
+                    matchExpressions:
+                    - key: k8s.a8c.io/node.class
+                      operator: In
+                      values:
+                      - vip-database
+                  weight: 20
+              podAntiAffinity:
+                requiredDuringSchedulingIgnoredDuringExecution:
+                - labelSelector:
+                    matchLabels:
+                      component: db
+                      app: defectdojo
+                  namespaces:
+                  - security-tools
+                  topologyKey: k8s.a8c.io/node.rack
+            cell: dfw_vip_exploud
+            dataVolumeClaimTemplate:
+              accessModes:
+              - ReadWriteOnce
+              resources:
+                requests:
+                  storage: 2Gi
+              storageClassName: localpv-vip-database
+            extraLabels:
+              component: db
+              app: defectdojo
+            mysqld:
+              resources:
+                limits:
+                  cpu: "2"
+                  memory: 2048Mi
+                requests:
+                  cpu: "0.5"
+                  memory: 512Mi
+            replicas: 2
+            type: replica
+            vttablet:
+              extraFlags:
+                app_idle_timeout: 30s
+                app_pool_size: "80"
+                app_pool_dynamic: "true"
+                backup_storage_block_size: "524288"
+                backup_storage_compress: "true"
+                backup_storage_number_blocks: "4"
+                db_allprivs_use_ssl: "false"
+                db_app_use_ssl: "false"
+                db_appdebug_use_ssl: "false"
+                db_charset: utf8mb4
+                db_connect_timeout_ms: "1000"
+                db_dba_use_ssl: "false"
+                db_erepl_use_ssl: "false"
+                db_filtered_use_ssl: "false"
+                db_repl_use_ssl: "false"
+                dba_idle_timeout: 30s
+                dba_pool_dynamic: "true"
+                dba_pool_size: "12"
+                enable-consolidator: "false"
+                enable-consolidator-replicas: "true"
+                enforce_strict_trans_tables: "false"
+                grpc_max_message_size: "536870912"
+                queryserver-config-idle-timeout: "30"
+                queryserver-config-max-result-size: "1000000"
+                queryserver-config-pool-dynamic: "true"
+                queryserver-config-stream-pool-dynamic: "true"
+                queryserver-config-transaction-dynamic: "true"                
+                queryserver-config-warn-result-size: "50000"
+                relay_log_max_items: "250000"
+                relay_log_max_size: "134217728"
+                xbstream_restore_flags: --parallel=1 --verbose
+                xtrabackup_backup_flags: --parallel=1 --verbose
+                xtrabackup_prepare_flags: --parallel=1 --verbose
+                xtrabackup_root_path: /usr/local/bin
+                xtrabackup_stream_mode: xbstream
+                xtrabackup_stripes: "0"
+              resources:
+                limits:
+                  cpu: "1"
+                  memory: 1024Mi
+                requests:
+                  cpu: "0.5"
+                  memory: 512Mi
+    turndownPolicy: RequireIdle
+  tabletService:
+    clusterIP: None
+  updateStrategy:
+    type: Immediate
+  vitessDashboard:
+    affinity:
+      nodeAffinity:
+        preferredDuringSchedulingIgnoredDuringExecution:
+        - preference:
+            matchExpressions:
+            - key: k8s.a8c.io/node.class
+              operator: In
+              values:
+              - vip-general
+          weight: 20
+    replicas: 1
+    resources:
+      limits:
+        cpu: 75m
+        memory: 100Mi
+      requests:
+        cpu: 25m
+        memory: 100Mi
+    service:
+      clusterIP: None

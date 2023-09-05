@@ -8,6 +8,12 @@ trackConfig: enabled
 host: 127.0.0.1
 database: mysql
 
+admin:
+  user: admin
+  password: DD-1337-FTW-dummy_p4ss
+  firstName: Agent
+  lastName: Smith
+
 django:
   ingress:
     enabled: false
@@ -19,12 +25,12 @@ celery:
 
 mysql:
   enabled: true
-  primary:
-    persistence:
-      storageClass: local-path
-      accessModes:
-        - ReadWriteOnce
-      size: 1Gi
+  auth:
+    username: defectdojo
+    password: dummy_p4ss_1337
+    database: defectdojo
+    rootPassword: r00t_dummy_p4ss_1337_r00t
+  #mysqlServer: vitess-defectdojo-db
 
 postgresql:
   enabled: false

@@ -1,0 +1,25 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: vitess-defectdojo-db-admin
+  namespace: security-tools
+  labels:
+    app: defectdojo
+    component: db
+spec:
+  type: ClusterIP
+  clusterIP: None
+  sessionAffinity: None
+  ports:
+  - name: web
+    protocol: TCP
+    port: 15000
+    targetPort: web
+  - name: grpc
+    protocol: TCP
+    port: 15999
+    targetPort: grpc
+  selector:
+    planetscale.com/cluster: vitess-defectdojo-db
+    planetscale.com/component: vtctld

@@ -59,7 +59,7 @@ fi
 echo "$POSTEE_EVENT" | jq '.defectdojo.scan' | tee "$TMP_FILE"
 
 # Initialize the command string
-COMMAND="curl -X POST -H \"Authorization: Token $DEFECTDOJO_API_TOKEN\""
+COMMAND="curl -H \"Authorization: Token $DEFECTDOJO_API_TOKEN\""
 
 # Check verb (action) to be performed, based on .defectdojo.verb
 VERB=$(echo "$POSTEE_EVENT" | jq '.defectdojo.verb')
@@ -99,7 +99,7 @@ else
   DD_IMPORT_URL="${DEFECTDOJO_URL}/api/v2/reimport-scan/"
 
   # add URL and final JSON payload (trivy report)
-  COMMAND="$COMMAND -F \"file=@${TMP_FILE}\" ${DD_IMPORT_URL}"
+  COMMAND="$COMMAND -F \"file=@${TMP_FILE}\" -X POST ${DD_IMPORT_URL}"
 fi
 
 
