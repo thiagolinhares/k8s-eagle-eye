@@ -18,8 +18,8 @@ operator:
   sbomGenerationEnabled: false
   exposedSecretScannerEnabled: false
   batchDeleteLimit: 10
-  metricsFindingsEnabled: false
-  metricsVulnIdEnabled: false
+  metricsFindingsEnabled: true
+  metricsVulnIdEnabled: true
   accessGlobalSecretsAndServiceAccount: false
   #privateRegistryScanSecretsNames: {"app": "dockerconfigjson-harbor"}
   webhookBroadcastURL: http://postee:8082
@@ -31,7 +31,7 @@ trivyOperator:
   reportResourceLabels: "team"
 
 serviceMonitor:
-  enabled: false
+  enabled: true
 
 trivy:
   additionalVulnerabilityReportFields: "Description,Links,CVSS,Target,Class,PackagePath,PackageType"
