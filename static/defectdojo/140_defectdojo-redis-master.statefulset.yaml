@@ -4,7 +4,7 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: defectdojo-redis-master
-  namespace: "security-tools"
+  namespace: security-tools
   labels:
     app.kubernetes.io/name: redis
     app.kubernetes.io/instance: defectdojo

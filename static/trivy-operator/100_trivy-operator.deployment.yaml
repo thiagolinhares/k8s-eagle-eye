@@ -4,7 +4,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: trivy-operator
-  namespace: "security-tools"
+  namespace: security-tools
   labels:
     app.kubernetes.io/name: trivy-operator
     app.kubernetes.io/instance: trivy-operator

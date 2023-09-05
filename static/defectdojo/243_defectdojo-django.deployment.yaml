@@ -4,7 +4,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: defectdojo-django
-  namespace: "security-tools"
+  namespace: security-tools
   labels:
     defectdojo.org/component: django
     app.kubernetes.io/name: defectdojo

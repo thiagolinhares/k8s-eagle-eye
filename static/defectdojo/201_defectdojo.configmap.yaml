@@ -4,7 +4,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: defectdojo
-  namespace: "security-tools"
+  namespace: security-tools
   labels:
     app.kubernetes.io/name: defectdojo
     app.kubernetes.io/instance: defectdojo

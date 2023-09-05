@@ -2,7 +2,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: postee-custom-scripts
-  namespace: "security-tools"
+  namespace: security-tools
 data:
   dd-upload.sh: "#!/usr/bin/env sh\n\n# this shell script is meant to be executed
     by a Aquasec/Postee \"exec\"\n# action, the event data is passed in through environment

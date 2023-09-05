@@ -2,7 +2,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: postee-custom-templates
-  namespace: "security-tools"
+  namespace: security-tools
 data:
   rego-trivy.rego: "# METADATA\n# title: trivy-operator-custom-defectdojo\n# scope:
     package\npackage postee.trivyoperator.custom.defectdojo  \n\ntitle:=\"-\" #not

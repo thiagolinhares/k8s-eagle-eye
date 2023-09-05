@@ -4,7 +4,7 @@ apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
   name: trivy-operator
-  namespace: "security-tools"
+  namespace: security-tools
   labels:
     app.kubernetes.io/name: trivy-operator
     app.kubernetes.io/instance: trivy-operator

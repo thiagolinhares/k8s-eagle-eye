@@ -4,7 +4,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: defectdojo-celery-beat
-  namespace: "security-tools"
+  namespace: security-tools
   labels:
     defectdojo.org/component: celery
     app.kubernetes.io/name: defectdojo

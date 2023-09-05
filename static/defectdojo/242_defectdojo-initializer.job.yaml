@@ -4,7 +4,7 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: defectdojo-initializer
-  namespace: "security-tools"
+  namespace: security-tools
   labels:
     defectdojo.org/component: initializer
     app.kubernetes.io/name: defectdojo

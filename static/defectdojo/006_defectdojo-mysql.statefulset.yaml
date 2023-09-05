@@ -4,7 +4,7 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: defectdojo-mysql
-  namespace: "security-tools"
+  namespace: security-tools
   labels:
     app.kubernetes.io/name: mysql
     app.kubernetes.io/instance: defectdojo

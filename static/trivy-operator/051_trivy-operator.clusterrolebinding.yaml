@@ -15,4 +15,4 @@ roleRef:
 subjects:
   - kind: ServiceAccount
     name: trivy-operator
-    namespace: "security-tools"
+    namespace: security-tools
