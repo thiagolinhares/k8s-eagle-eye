@@ -1,0 +1,69 @@
+---
+# Source: defectdojo/templates/celery-beat-deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: defectdojo-celery-beat
+  namespace: security-tools
+  labels:
+    defectdojo.org/component: celery
+    app.kubernetes.io/name: defectdojo
+    app.kubernetes.io/instance: defectdojo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      defectdojo.org/component: celery
+      app.kubernetes.io/name: defectdojo
+      app.kubernetes.io/instance: defectdojo
+  template:
+    metadata:
+      labels:
+        defectdojo.org/component: celery
+        app.kubernetes.io/name: defectdojo
+        app.kubernetes.io/instance: defectdojo
+    spec:
+      serviceAccountName: defectdojo
+      volumes:
+      - name: run
+        emptyDir: {}
+      containers:
+      - command:
+        - /entrypoint-celery-beat.sh
+        name: celery
+        image: "defectdojo/defectdojo-django:2.25.4"
+        imagePullPolicy: Always
+        securityContext:
+          runAsUser: 1001
+        volumeMounts:
+        - name: run
+          mountPath: /run/defectdojo
+        envFrom:
+        - configMapRef:
+            name: defectdojo
+        - secretRef:
+            name: defectdojo-extrasecrets
+            optional: true
+        env:
+        - name: DD_CELERY_BROKER_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: defectdojo-redis-specific
+              key: redis-password
+        - name: DD_DATABASE_PASSWORD
+          valueFrom:
+            secretKeyRef:
+                name: defectdojo-mysql-specific
+                key: mysql-password
+        - name: DD_SECRET_KEY
+          valueFrom:
+            secretKeyRef:
+              name: defectdojo
+              key: DD_SECRET_KEY
+        resources:
+          limits:
+            cpu: 2000m
+            memory: 256Mi
+          requests:
+            cpu: 100m
+            memory: 128Mi

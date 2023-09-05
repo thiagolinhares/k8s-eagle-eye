@@ -1,0 +1,49 @@
+---
+# Source: defectdojo/templates/initializer-job.yaml
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: defectdojo-initializer
+  namespace: security-tools
+  labels:
+    defectdojo.org/component: initializer
+    app.kubernetes.io/name: defectdojo
+    app.kubernetes.io/instance: defectdojo
+spec:
+  ttlSecondsAfterFinished: 60
+  template:
+    metadata:
+      labels:
+        defectdojo.org/component: initializer
+        app.kubernetes.io/name: defectdojo
+        app.kubernetes.io/instance: defectdojo
+    spec:
+      serviceAccountName: defectdojo
+      containers:
+      - name: initializer
+        image: "defectdojo/defectdojo-django:2.25.4"
+        imagePullPolicy: Always
+        securityContext:
+          runAsUser: 1001
+        command:
+          - /entrypoint-initializer.sh
+        envFrom:
+        - configMapRef:
+            name: defectdojo
+        - secretRef:
+            name: defectdojo
+        env:
+        - name: DD_DATABASE_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: defectdojo-mysql-specific
+              key: mysql-password
+        resources:
+          limits:
+            cpu: 2000m
+            memory: 512Mi
+          requests:
+            cpu: 100m
+            memory: 256Mi
+      restartPolicy: Never
+  backoffLimit: 1

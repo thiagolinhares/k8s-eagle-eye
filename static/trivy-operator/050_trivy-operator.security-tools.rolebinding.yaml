@@ -1,17 +1,19 @@
 ---
 # Source: trivy-operator/templates/rbac.yaml
 apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRoleBinding
+kind: RoleBinding
 metadata:
   name: trivy-operator
+  namespace: security-tools
   labels:
     app.kubernetes.io/name: trivy-operator
     app.kubernetes.io/instance: trivy-operator
     app.kubernetes.io/version: "0.15.1"
 roleRef:
   apiGroup: rbac.authorization.k8s.io
-  kind: ClusterRole
+  kind: Role
   name: trivy-operator
+
 subjects:
   - kind: ServiceAccount
     name: trivy-operator

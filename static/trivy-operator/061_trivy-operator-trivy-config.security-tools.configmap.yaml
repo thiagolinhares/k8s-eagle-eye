@@ -1,0 +1,36 @@
+---
+# Source: trivy-operator/templates/config.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: trivy-operator-trivy-config
+  namespace: security-tools
+  labels:
+    app.kubernetes.io/name: trivy-operator
+    app.kubernetes.io/instance: trivy-operator
+    app.kubernetes.io/version: "0.15.1"
+data:
+  trivy.repository: "ghcr.io/aquasecurity/trivy"
+  trivy.tag: "0.44.1"
+  trivy.additionalVulnerabilityReportFields: "Description,Links,CVSS,Target,Class,PackagePath,PackageType"
+  trivy.severity: "UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL"
+  trivy.slow: "false"
+  trivy.dbRepository: "ghcr.io/aquasecurity/trivy-db"
+  trivy.javaDbRepository: "ghcr.io/aquasecurity/trivy-java-db"
+  trivy.command: "image"
+  trivy.dbRepositoryInsecure: "false"
+  trivy.useBuiltinRegoPolicies: "true"
+  trivy.supportedConfigAuditKinds: "Workload,Service,Role,ClusterRole,NetworkPolicy,Ingress,LimitRange,ResourceQuota"
+  trivy.ignoreUnfixed: "true"
+  trivy.timeout: "5m0s"
+  trivy.serverURL: "http://trivy-service.security-tools:4954"
+  trivy.mode: "ClientServer"
+  trivy.resources.requests.cpu: "100m"
+  trivy.resources.requests.memory: "100M"
+  trivy.resources.limits.cpu: "500m"
+  trivy.resources.limits.memory: "500M"
+  TRIVY_LISTEN: "0.0.0.0:4954"
+  TRIVY_CACHE_DIR: "/home/scanner/.cache/trivy"
+  TRIVY_DEBUG: "true"
+  TRIVY_SKIP_UPDATE: "false"
+  TRIVY_DB_REPOSITORY: "ghcr.io/aquasecurity/trivy-db"

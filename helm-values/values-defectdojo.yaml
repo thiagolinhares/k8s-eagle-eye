@@ -3,7 +3,6 @@ createRabbitMqSecret: false
 createRedisSecret: true
 createMysqlSecret: true
 createPostgresqlSecret: false
-trackConfig: enabled
 
 host: 127.0.0.1
 database: mysql
@@ -30,6 +29,9 @@ mysql:
     password: dummy_p4ss_1337
     database: defectdojo
     rootPassword: r00t_dummy_p4ss_1337_r00t
+  primary:
+    persistence:
+      storageClass: localpv-vip-database
   #mysqlServer: vitess-defectdojo-db
 
 postgresql:
