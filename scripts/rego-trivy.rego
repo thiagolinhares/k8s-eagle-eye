@@ -62,7 +62,7 @@ dd_data:= {
       "version": image_version,
       "group_by": "component_name",
       "close_old_findings": false,
-      "clode_old_findings_product_scope": false,
+      "close_old_findings_product_scope": false,
       "deduplication_on_engagement": true,
       "do_not_reactivate": false,
       "tags": [sprintf("image=%s", [image_full_name]), sprintf("namespace=%s", [input.operatorObject.metadata.labels["trivy-operator.resource.namespace"]]), sprintf("name=%s", [input.operatorObject.metadata.labels["trivy-operator.resource.name"]]), sprintf("container=%s", [input.operatorObject.metadata.labels["trivy-operator.container.name"]]), sprintf("kind=%s", [input.operatorObject.metadata.labels["trivy-operator.resource.kind"]])]
