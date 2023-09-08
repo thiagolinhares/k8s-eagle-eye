@@ -1,0 +1,46 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: postee-config
+  namespace: security-tools
+data:
+  cfg.yaml: |
+    name: postee
+    max-db-size: 1000MB
+    db-verify-interval: 6
+
+    # Routes are used to define how to handle an incoming message
+    routes:
+    - name: Trivy Operator - Vulnerabilities
+      input: contains(input.operatorObject.kind, "VulnerabilityReport")
+      serialize-actions: true
+      actions: [send-to-dd]
+      template: dd-rego
+
+    ### Commented out - will be used later on
+    #- name: Trivy Operator - Everything Else
+    #  input: not contains(input.operatorObject.kind, "VulnerabilityReport")
+    #  serialize-actions: true
+    #  actions: [send-to-logstash]
+    #  template: raw-json
+
+    # Templates are used to format a message
+    templates:
+    - name: raw-json
+      rego-package: postee.rawmessage.json
+
+    - name: dd-rego
+      rego-package: postee.trivyoperator.custom.defectdojo
+
+    actions:
+    - name: send-to-logstash
+      type: webhook
+      enable: false
+      url: "http://logstash-api.example.com:8080"
+
+    # Environment variables set through secret postee-dd-env
+    - name: send-to-dd
+      type: exec
+      enable: true
+      input-file: /server/scripts/dd-upload.sh

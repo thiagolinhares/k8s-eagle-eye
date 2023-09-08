@@ -26,13 +26,7 @@ spec:
         app.kubernetes.io/name: redis
         app.kubernetes.io/instance: defectdojo
         app.kubernetes.io/component: master
-      annotations:
-        checksum/configmap: c540b65260eae78a621251e9c3a2e39c6afa0dbe15495bfe16197e3452f69e4f
-        checksum/health: f3b09f0cb013896c8cd1772863b38a217d804815154271777725f93bc6029cda
-        checksum/scripts: 53d905de84cef213c607ea83bac565175c6096fa87bd390486fcb591d9cf64ed
-        checksum/secret: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
     spec:
-      
       securityContext:
         fsGroup: 1001
       serviceAccountName: defectdojo-redis

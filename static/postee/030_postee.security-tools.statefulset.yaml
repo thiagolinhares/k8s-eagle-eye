@@ -18,8 +18,6 @@ spec:
   serviceName: postee
   template:
     metadata:
-      annotations:
-        checksum/secret: 0632e397a1c6b41cf139f12cd19177a84cf0a655804d23a19ebeeaa9a9e9b760
       labels:
         app.kubernetes.io/name: postee
         app.kubernetes.io/instance: postee
@@ -39,7 +37,7 @@ spec:
           imagePullPolicy: IfNotPresent
           command: ["/bin/cp", "/k8s/cfg.yaml", "/data/cfg.yaml"]
           volumeMounts:
-            - name: postee-secret-vol
+            - name: postee-configmap-vol
               mountPath: /k8s
             - name: postee-config
               mountPath: /data
@@ -79,10 +77,10 @@ spec:
               mountPath: /server/rego-templates/custom
             - name: postee-filters
               mountPath: /server/rego-filters/custom
-            - mountPath: /server/rego-templates/my-custom
-              name: custom-templates
-            - mountPath: /server/scripts
-              name: custom-scripts
+            - name: custom-templates
+              mountPath: /server/rego-templates/my-custom
+            - name: custom-scripts
+              mountPath: /server/scripts
           resources:
             limits:
               cpu: 500m
@@ -91,26 +89,29 @@ spec:
               cpu: 200m
               memory: 128Mi
       volumes:
-        - secret:
-            secretName: postee-secret
-          name: postee-secret-vol
-        - emptyDir: {}
-          name: postee-db
-        - emptyDir: {}
-          name: postee-config
-        - emptyDir: {}
-          name: postee-rego-template
-        - emptyDir: {}
-          name: postee-filters
-        - configMap:
+        - name: postee-db
+          emptyDir: {}
+        - name: postee-config
+          emptyDir: {}
+        - name: postee-rego-template
+          emptyDir: {}
+        - name: postee-filters
+          emptyDir: {}
+        - name: postee-configmap-vol
+          configMap:
+            name: postee-config
+            items:
+              - key: cfg.yaml
+                path: cfg.yaml
+        - name: custom-templates
+          configMap:
+            name: postee-custom-templates
             items:
               - key: rego-trivy.rego
                 path: rego-trivy.rego
-            name: postee-custom-templates
-          name: custom-templates
-        - configMap:
+        - name: custom-scripts
+          configMap:
+            name: postee-custom-scripts
             items:
               - key: dd-upload.sh
                 path: dd-upload.sh
-            name: postee-custom-scripts
-          name: custom-scripts

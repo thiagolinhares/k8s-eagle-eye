@@ -21,8 +21,6 @@ spec:
     type: RollingUpdate
   template:
     metadata:
-      annotations:
-        checksum/configuration: 27cf01f8fe0165dfdbf8ab91df7b1de21738117853ffcd5febd8a79fe12cade0
       labels:
         app.kubernetes.io/name: mysql
         app.kubernetes.io/instance: defectdojo
